@@ -1,11 +1,10 @@
 import React from "react";
 import { Button } from "@chakra-ui/react"
 
-function ButtonInput() {
+function ButtonInput(props) {
 
     return (
         <Button
-            className="showElement"
             size="lg"
             mt="2rem"
             w="100%"
@@ -16,7 +15,7 @@ function ButtonInput() {
                 bg: "#b3222b",
             }}
         >
-            Login
+            {props.text}
         </Button>
     )
 }

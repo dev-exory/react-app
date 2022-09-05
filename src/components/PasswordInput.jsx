@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import { Button, Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/react'
-import { LockIcon } from '@chakra-ui/icons'
+import { LockIcon, RepeatIcon } from '@chakra-ui/icons'
 
 
-function PasswordInput() {
+function PasswordInput(props) {
     const [show, setShow] = useState(false)
     // const handleClick = () => setShow(!show)
     function handleClick() {
@@ -11,12 +11,12 @@ function PasswordInput() {
     }
 
     return (
-        <InputGroup className="showElement" mt="2rem">
+        <InputGroup mt="2rem">
             <InputLeftElement h="100%"
                 pointerEvents='none'
-                children={<LockIcon />}
+                children={props.text === "Password" ? <LockIcon /> : <RepeatIcon />}
             />
-            <Input type={show ? 'text' : 'password'} placeholder='Password' size="lg" />
+            <Input type={show ? 'text' : 'password'} placeholder={props.text} size="lg" />
             <InputRightElement width='4.5rem' h="100%">
                 <Button h='1.75rem' size='sm' onClick={handleClick}>
                     {show ? 'Hide' : 'Show'}
