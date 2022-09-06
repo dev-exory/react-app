@@ -43,19 +43,20 @@ export default function Register({ handleChange }) {
             <PhoneInput name="phoneNumber" handleChange={handleChange} setState={setRegisterInputs} />
             <PasswordInput text="Password" name="password" handleChange={handleChange} setState={setRegisterInputs} />
             <PasswordInput text="Repeat password" isInvalid={!passwordMatch} name="repeatPassword" handleChange={handleChange} setState={setRegisterInputs} />
-            <ButtonInput text="Register" />
-            <TextComponent text="Back to login" target="/login" />
-            <h1>{registerInputs.username}</h1>
-            <h1>{registerInputs.phoneNumber}</h1>
-            <h1>{registerInputs.password}</h1>
-            <h1>{registerInputs.repeatPassword}</h1>
-
             {!passwordMatch &&
                 <Alert status='error'>
                     <AlertIcon />
                     <AlertTitle>Password fields do not match!</AlertTitle>
                     {/* <AlertDescription>Password fields do not match!</AlertDescription> */}
                 </Alert>}
+            <ButtonInput text="Register" />
+            <TextComponent text="Back to login" target="/login" />
+            {/* <h1>{registerInputs.username}</h1>
+            <h1>{registerInputs.phoneNumber}</h1>
+            <h1>{registerInputs.password}</h1>
+            <h1>{registerInputs.repeatPassword}</h1> */}
+
+
 
         </>
     )
