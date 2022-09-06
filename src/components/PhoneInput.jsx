@@ -1,26 +1,8 @@
 import React from 'react'
-import { Input, InputGroup, InputLeftElement, InputLeftAddon, InputRightElement, Stack, Button, Image, Flex, Box, Spacer, Text } from '@chakra-ui/react'
-import { VStack, Container } from '@chakra-ui/react'
+import { Input, InputGroup, InputLeftElement, InputLeftAddon, InputRightElement, } from '@chakra-ui/react'
 import { PhoneIcon } from '@chakra-ui/icons'
-import xd from '../assets/flags/1x1/pl.svg'
 
-import {
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
-    MenuItemOption,
-    MenuGroup,
-    MenuOptionGroup,
-    MenuDivider,
-} from '@chakra-ui/react'
-
-import countries from "../assets/flags/countries.json"
-
-import images from "../assets/flags/importImages"
-
-console.log(images['pl.svg'])
-export default function () {
+export default function PhoneInput({ handleChange, name, setState }) {
     return (
         <>
             <InputGroup mt="2rem" size='lg' >
@@ -29,7 +11,13 @@ export default function () {
                     children={<PhoneIcon />}
                 /> */}
                 <InputLeftAddon children="+" />
-                <Input type='num' placeholder='phone number' size='lg' />
+                <Input
+                    type='num'
+                    placeholder='phone number'
+                    size='lg'
+                    name={name}
+                    onChange={(e) => handleChange(e, setState)}
+                />
             </InputGroup>
 
         </>

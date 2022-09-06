@@ -4,7 +4,7 @@ import { Text } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 
 
-function TextComponent({ text, target }) {
+export default function TextComponent({ text, target }) {
     return (
         <Text mt="1rem" >
             <Link to={target}>
@@ -13,5 +13,3 @@ function TextComponent({ text, target }) {
         </Text>
     )
 }
-
-export default TextComponent;

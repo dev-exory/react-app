@@ -20,10 +20,25 @@ const config = {
     useSystemColorMode: true,
 };
 
-function App() {
+export default function App() {
     const theme = extendTheme(
         { config }
     );
+
+
+
+    function handleChange(event, setterFunction) {
+        const { name, value } = event.target
+
+        setterFunction(prevValue => {
+            return {
+                ...prevValue,
+                [name]: value
+            }
+        })
+    }
+
+
 
     return (
         <ChakraProvider theme={theme}>
@@ -34,8 +49,8 @@ function App() {
                     <Container minW="400px" mt="60px" className="showElement">
                         <Routes>
                             <Route path="/" element={<Home />} />
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/register" element={<Register />} />
+                            <Route path="/login" element={<Login handleChange={handleChange} />} />
+                            <Route path="/register" element={<Register handleChange={handleChange} />} />
                         </Routes>
                     </Container>
                 </VStack>
@@ -45,4 +60,3 @@ function App() {
     )
 }
 
-export default App;
