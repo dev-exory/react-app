@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NavbarComponent from "./components/NavbarComponent";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
@@ -13,7 +13,8 @@ import { extendTheme } from "@chakra-ui/react";
 import { Container, VStack } from "@chakra-ui/react";
 
 // Routes
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom"
+
 
 const config = {
     initialColorMode: "dark",
@@ -21,11 +22,13 @@ const config = {
 };
 
 export default function App() {
+    const navigate = useNavigate()
+    const location = useLocation()
     const theme = extendTheme(
         { config }
     );
 
-
+    const [user, setUser] = useState()
 
     function handleChange(event, setterFunction) {
         const { name, value } = event.target
@@ -38,18 +41,29 @@ export default function App() {
         })
     }
 
+    useEffect(() => {
+        const token = localStorage.getItem('authToken');
+        console.log("token = " + token)
+        if (token === null) {
+            if (location.pathname != "/login") navigate("/login")
+        } else {
+            navigate("/")
+        }
+
+    }, [])
+
 
 
     return (
-        <ChakraProvider theme={theme}>
+        <ChakraProvider theme={theme} >
             <NavbarComponent />
-            <div className="container">
-                <img width="280px" height="280px" src={logo} alt="gowno" />
+            <div className="container" >
+                <img width="200px" height="200px" src={logo} />
                 <VStack>
-                    <Container minW="400px" mt="60px" className="showElement">
+                    <Container width="400px" mt="50px" className="showElement" >
                         <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/login" element={<Login handleChange={handleChange} />} />
+                            <Route path="/" element={<Home user={user} />} />
+                            <Route path="/login" element={<Login handleChange={handleChange} setUser={setUser} />} />
                             <Route path="/register" element={<Register handleChange={handleChange} />} />
                         </Routes>
                     </Container>

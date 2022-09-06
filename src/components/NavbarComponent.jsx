@@ -14,8 +14,8 @@ function NavbarComponent() {
             <Spacer />
             <Button
                 size='md'
-                m='25px'
-                w='90px'
+                m='20px'
+                w='70px'
                 onClick={toggleColorMode}
                 borderRadius='12px'
             >

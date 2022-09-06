@@ -5,8 +5,9 @@ function ButtonInput(props) {
 
     return (
         <Button
-            size="lg"
-            mt="2rem"
+            onClick={props.onClick}
+            size="md"
+            mt="1.6rem"
             w="100%"
             bg="#e12b37"
             borderRadius="10"

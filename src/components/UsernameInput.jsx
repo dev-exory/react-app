@@ -5,7 +5,7 @@ import { EmailIcon, InfoIcon, RepeatIcon } from '@chakra-ui/icons'
 
 export default function UsernameInput({ handleChange, type, name, text, setState }) {
     return (
-        <InputGroup mt="2rem" w="100%">
+        <InputGroup mt="1.6rem" w="100%">
             <InputLeftElement
                 h="100%"
                 pointerEvents='none'
@@ -15,7 +15,7 @@ export default function UsernameInput({ handleChange, type, name, text, setState
                 onChange={(e) => handleChange(e, setState)}
                 type={type}
                 placeholder={text}
-                size="lg"
+                size="md"
                 name={name} />
         </InputGroup>
     )

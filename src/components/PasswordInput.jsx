@@ -11,7 +11,7 @@ export default function PasswordInput({ handleChange, text, name, setState, isIn
     }
 
     return (
-        <InputGroup mt="2rem">
+        <InputGroup mt="1.6rem">
             <InputLeftElement
                 h="100%"
                 pointerEvents='none'
@@ -23,7 +23,7 @@ export default function PasswordInput({ handleChange, text, name, setState, isIn
                 onChange={(e) => handleChange(e, setState)}
                 type={show ? 'text' : 'password'}
                 placeholder={text}
-                size="lg"
+                size="md"
                 name={name}
             />
             <InputRightElement width='4.5rem' h="100%">

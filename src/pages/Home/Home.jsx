@@ -1,43 +1,34 @@
 import React, { useEffect, useState } from 'react'
-import { Stack, Input } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
+import { Button } from '@chakra-ui/react'
 
-export default function Home() {
+export default function Home({ user }) {
 
-    const [data, setdata] = useState()
+    const navigate = useNavigate()
 
-
-
+    function logout() {
+        localStorage.removeItem('authToken')
+        navigate("/login")
+    }
 
     useEffect(() => {
-
-        const requestOptions = {
-            method: "GET"
+        const token = localStorage.getItem('authToken')
+        if (token === null) {
+            navigate("/login")
+            return
         }
-
-        fetch("https://api-v2.exory.dev/user/pub/MELVAR", requestOptions)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(
-                        'HTTP error'
-                    )
-                }
-                return response.json()
-            })
-            .then((response) => setdata(response))
     }, [])
 
 
     return (
         <>
-            <Stack spacing={3}>
-                <Input placeholder='extra small size' size='xs' />
-                <Input placeholder='small size' size='sm' />
-                <Input placeholder='medium size' size='md' />
-                <Input placeholder='large size' size='lg' />
-            </Stack>
-            <h1>{data && data.name}</h1>
+            <h1>{user && user.name}</h1>
+            <Button
+                onClick={logout}
+            >
+                Logout
+            </Button>
         </>
 
     )
 }
-
