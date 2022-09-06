@@ -11,7 +11,7 @@ import {
     AlertTitle,
     AlertDescription,
 } from '@chakra-ui/react'
-
+import { Fade, ScaleFade, Slide, SlideFade } from '@chakra-ui/react'
 
 export default function Register({ handleChange }) {
 
@@ -33,6 +33,9 @@ export default function Register({ handleChange }) {
             } else {
                 setPasswordMatch(true)
             }
+
+        } else {
+            setPasswordMatch(true)
         }
     }, [registerInputs])
 
