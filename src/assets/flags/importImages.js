@@ -12,3 +12,11 @@ const images = importAll(
 );
 
 export default images;
+
+// {
+//   "name": "Canada",
+//   "dial_code": "+1",
+//   "code": "CA",
+//   "flag_1x1": "flags/1x1/ca.svg",
+//   "flag_4x3": "flags/4x3/ca.svg"
+// },

@@ -5,6 +5,7 @@ function ButtonInput(props) {
 
     return (
         <Button
+            disabled={props.disabled}
             onClick={props.onClick}
             size="md"
             mt="1.6rem"

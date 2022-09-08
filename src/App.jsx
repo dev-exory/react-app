@@ -3,8 +3,6 @@ import NavbarComponent from "./components/NavbarComponent";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
-
-import logo from "./assets/logo.svg";
 import '../src/assets/styles.css'
 
 // Chakra UI Dark Theme && css
@@ -57,18 +55,15 @@ export default function App() {
     return (
         <ChakraProvider theme={theme} >
             <NavbarComponent />
-            <div className="container" >
-                <img width="200px" height="200px" src={logo} />
-                <VStack>
-                    <Container width="400px" mt="50px" className="showElement" >
-                        <Routes>
-                            <Route path="/" element={<Home user={user} />} />
-                            <Route path="/login" element={<Login handleChange={handleChange} setUser={setUser} />} />
-                            <Route path="/register" element={<Register handleChange={handleChange} />} />
-                        </Routes>
-                    </Container>
-                </VStack>
-            </div>
+            <VStack>
+                <Container width="400px" mt="50px" >
+                    <Routes>
+                        <Route path="/" element={<Home user={user} />} />
+                        <Route path="/login" element={<Login handleChange={handleChange} setUser={setUser} />} />
+                        <Route path="/register" element={<Register handleChange={handleChange} />} />
+                    </Routes>
+                </Container>
+            </VStack>
 
         </ChakraProvider>
     )

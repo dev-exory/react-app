@@ -1,29 +1,78 @@
-import React from 'react'
-import { Input, InputGroup, InputLeftElement, InputLeftAddon, InputRightElement, } from '@chakra-ui/react'
-import { PhoneIcon, SmallAddIcon } from '@chakra-ui/icons'
+import React, { useState, useEffect } from "react";
+import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import { PhoneIcon } from "@chakra-ui/icons";
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+} from "@chakra-ui/react";
+import images from "../assets/flags/importImages";
+export default function PhoneInput({
+  logoPath,
+  countryCodeMatch,
+  handleChange,
+  setState,
+}) {
+  function handleFocus(event) {
+    event.target.value = "+";
+  }
 
-export default function PhoneInput({ handleChange, name, setState }) {
-    return (
-        <>
-            <InputGroup mt="1.6rem">
-                {/* <InputLeftElement h="100%"
-                    pointerEvents='none'
-                    children={<PhoneIcon />}
-                /> */}
-                <InputLeftElement
-                    pointerEvents='none'
-                    // bgColor="gray"
-                    children={<SmallAddIcon />}
+  return (
+    <>
+      <FormControl mt="1rem">
+        <FormLabel>Phone number</FormLabel>
+        <InputGroup>
+          {logoPath != "" ? (
+            <InputLeftElement
+              pointerEvents="none"
+              children={
+                <img
+                  src={logoPath}
+                  width="20px"
+                  height="20px"
+                  style={{
+                    opacity: countryCodeMatch ? "1" : "0.5",
+                    border: "1px solid black",
+                  }}
                 />
-                <Input
-                    type='num'
-                    placeholder='Phone number'
-                    size='md'
-                    name={name}
-                    onChange={(e) => handleChange(e, setState)}
+              }
+            />
+          ) : (
+            <InputLeftElement
+              pointerEvents="none"
+              children={
+                <img
+                  src={images["pl.svg"]}
+                  width="20px"
+                  height="20px"
+                  style={{ opacity: "0.5" }}
                 />
-            </InputGroup>
+              }
+            />
+          )}
 
-        </>
-    )
+          <Input
+            type="num"
+            width="100px"
+            placeholder="+48"
+            name="countryCode"
+            onFocus={handleFocus}
+            onChange={(e) => handleChange(e, setState)}
+          />
+          <InputGroup>
+            <InputLeftElement pointerEvents="none" children={<PhoneIcon />} />
+            <Input
+              type="number"
+              placeholder="Phone number"
+              size="md"
+              name="phoneNumber"
+              onChange={(e) => handleChange(e, setState)}
+            />
+          </InputGroup>
+        </InputGroup>
+        <FormHelperText>Needed for account recovery</FormHelperText>
+      </FormControl>
+    </>
+  );
 }
