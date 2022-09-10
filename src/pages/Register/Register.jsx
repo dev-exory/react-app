@@ -6,7 +6,7 @@ import ButtonInput from "../../components/ButtonInput";
 import TextComponent from "../../components/TextComponent";
 
 import {
-  checkUsername,
+  validateUsername,
   validateInputs,
 } from "../../functions/registerValidation";
 
@@ -14,13 +14,6 @@ import images from "../../assets/flags/importImages.js";
 import countries from "../../assets/flags/countries.json";
 
 import logo from "../../assets/logo.svg";
-
-import {
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-} from "@chakra-ui/react";
 
 export default function Register({ handleChange }) {
   const [registerInputs, setRegisterInputs] = useState({
@@ -32,12 +25,7 @@ export default function Register({ handleChange }) {
   });
 
   const [inputsValidation, setInputsValidation] = useState({
-    username: [true, false],
-    countryCode: [true, false],
-    isPhoneNumberValid: [true, false],
-    phoneNumber: [true, false],
-    password: [true, false],
-    repeatPassword: [true, false],
+    countryCodeValidation: false,
   });
 
   const [codeSent, setCodeSent] = useState(false);
@@ -52,45 +40,46 @@ export default function Register({ handleChange }) {
     console.log("to verify");
   };
 
-  // inputs validation
-  useEffect(() => {
+  const fetchData = async () => {
     setInputsValidation({
       ...inputsValidation,
-      ...validateInputs(registerInputs),
+      username: [await validateUsername(registerInputs.username), false],
     });
-    console.log(inputsValidation);
-  }, [registerInputs]);
+  };
 
   // validate username
   useEffect(() => {
-    const fetchData = async () => {
-      setInputsValidation({
-        ...inputsValidation,
-        username: [await checkUsername(registerInputs.username), false],
-      });
-    };
     fetchData();
-    console.log(inputsValidation);
   }, [registerInputs.username]);
 
-  // country flag change
+  useEffect(() => {
+    if (inputsValidation.countryCodeValidation) {
+      setCountryCodeMatch(true);
+    } else {
+      setCountryCodeMatch(false);
+    }
+    console.log("kantry kołd " + inputsValidation.countryCodeValidation);
+  }, [inputsValidation.countryCodeValidation]);
+
+  // validate country flag
   useEffect(() => {
     countries.every((element) => {
-      console.log("szuka");
       if (element.dial_code === registerInputs.countryCode) {
-        console.log("znalazl");
-        setLogoPath(images[`${element.code.toLowerCase()}.svg`]);
         setCountryCodeMatch(true);
-        setInputsValidation({
-          ...inputsValidation,
-          countryCode: [countryCodeMatch, false],
+        setLogoPath(images[`${element.code.toLowerCase()}.svg`]);
+        setInputsValidation((prevValue) => {
+          return {
+            ...prevValue,
+            countryCodeValidation: true,
+          };
         });
         return false;
       } else {
-        setCountryCodeMatch(false);
-        setInputsValidation({
-          ...inputsValidation,
-          countryCode: [countryCodeMatch, false],
+        setInputsValidation((prevValue) => {
+          return {
+            ...prevValue,
+            countryCodeValidation: false,
+          };
         });
         return true;
       }

@@ -1,4 +1,7 @@
-const checkUsername = async (username) => {
+import images from "../assets/flags/importImages";
+import countries from "../assets/flags/countries.json";
+
+const validateUsername = async (username) => {
   let returnValue = false;
   const requestOptions = {
     method: "GET",
@@ -17,7 +20,6 @@ const checkUsername = async (username) => {
       }
     });
   }
-  console.log("na koncu " + returnValue);
   return returnValue;
 };
 
@@ -26,11 +28,11 @@ const validateInputs = (inputs) => {
   const password = inputs.password;
   const repeatPassword = inputs.repeatPassword;
   const result = {
-    countryCode: [true, false],
-    isPhoneNumberValid: [true, false],
-    phoneNumber: [true, false],
-    password: [true, false],
-    repeatPassword: [true, false],
+    countryCode: [false, false],
+    isPhoneNumberValid: [false, false],
+    phoneNumber: [false, false],
+    password: [false, false],
+    repeatPassword: [false, false],
   };
 
   // validate phone number
@@ -61,8 +63,7 @@ const validateInputs = (inputs) => {
     result.password[0] = false;
     result.repeatPassword[0] = false;
   }
-
   return result;
 };
 
-export { checkUsername, validateInputs };
+export { validateUsername, validateInputs };
