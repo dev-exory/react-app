@@ -7,8 +7,22 @@ import TextComponent from "../../components/TextComponent";
 
 import {
   validateUsername,
-  validateInputs,
+  validateCountryCode,
+  validatePhoneNumber,
+  validatePasswords,
 } from "../../functions/registerValidation";
+
+import {
+  Icon,
+  VStack,
+  Container,
+  Grid,
+  GridItem,
+  Flex,
+  Box,
+  Spacer,
+} from "@chakra-ui/react";
+import { CheckCircleIcon } from "@chakra-ui/icons";
 
 import images from "../../assets/flags/importImages.js";
 import countries from "../../assets/flags/countries.json";
@@ -25,7 +39,10 @@ export default function Register({ handleChange }) {
   });
 
   const [inputsValidation, setInputsValidation] = useState({
+    usernameValidation: false,
     countryCodeValidation: false,
+    phoneNumberValidation: false,
+    passwordValidation: false,
   });
 
   const [codeSent, setCodeSent] = useState(false);
@@ -43,48 +60,89 @@ export default function Register({ handleChange }) {
   const fetchData = async () => {
     setInputsValidation({
       ...inputsValidation,
-      username: [await validateUsername(registerInputs.username), false],
+      usernameValidation: [await validateUsername(registerInputs.username)],
     });
   };
+
+  // username validate debug
+  useEffect(() => {
+    console.log("Username validation: " + inputsValidation.usernameValidation);
+  }, [inputsValidation.usernameValidation]);
 
   // validate username
   useEffect(() => {
     fetchData();
   }, [registerInputs.username]);
 
+  // country code validate debug
   useEffect(() => {
-    if (inputsValidation.countryCodeValidation) {
-      setCountryCodeMatch(true);
-    } else {
-      setCountryCodeMatch(false);
-    }
-    console.log("kantry kołd " + inputsValidation.countryCodeValidation);
+    console.log(
+      "Country code validation: " + inputsValidation.countryCodeValidation
+    );
   }, [inputsValidation.countryCodeValidation]);
 
   // validate country flag
   useEffect(() => {
-    countries.every((element) => {
-      if (element.dial_code === registerInputs.countryCode) {
-        setCountryCodeMatch(true);
-        setLogoPath(images[`${element.code.toLowerCase()}.svg`]);
-        setInputsValidation((prevValue) => {
-          return {
-            ...prevValue,
-            countryCodeValidation: true,
-          };
-        });
-        return false;
-      } else {
-        setInputsValidation((prevValue) => {
-          return {
-            ...prevValue,
-            countryCodeValidation: false,
-          };
-        });
-        return true;
-      }
-    });
+    const [value, path] = validateCountryCode(registerInputs.countryCode);
+
+    if (value) {
+      setCountryCodeMatch(true);
+      setLogoPath(path);
+      setInputsValidation((prevValue) => {
+        return {
+          ...prevValue,
+          countryCodeValidation: true,
+        };
+      });
+    } else {
+      setCountryCodeMatch(false);
+      setInputsValidation((prevValue) => {
+        return {
+          ...prevValue,
+          countryCodeValidation: false,
+        };
+      });
+    }
   }, [registerInputs.countryCode]);
+
+  //  phone number validate debug
+  useEffect(() => {
+    console.log(
+      "Phone number validation: " + inputsValidation.phoneNumberValidation
+    );
+  }, [inputsValidation.phoneNumberValidation]);
+
+  // validate phone number
+  useEffect(() => {
+    setInputsValidation((prevValue) => {
+      return {
+        ...prevValue,
+        phoneNumberValidation: [
+          validatePhoneNumber(registerInputs.phoneNumber),
+        ],
+      };
+    });
+  }, [registerInputs.phoneNumber]);
+
+  // password validate debug
+  useEffect(() => {
+    console.log("Passwords validaton: " + inputsValidation.passwordValidation);
+  }, [inputsValidation.passwordValidation]);
+
+  // validate passwords
+  useEffect(() => {
+    setInputsValidation((prevValue) => {
+      return {
+        ...prevValue,
+        passwordValidation: [
+          validatePasswords(
+            registerInputs.password,
+            registerInputs.repeatPassword
+          ),
+        ],
+      };
+    });
+  }, [registerInputs.password, registerInputs.repeatPassword]);
 
   return (
     <div>
@@ -92,6 +150,29 @@ export default function Register({ handleChange }) {
       <div>
         {!codeSent && (
           <>
+            {/* <Flex
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <UsernameInput
+                type="text"
+                text="Username"
+                name="username"
+                purpose="register"
+                handleChange={handleChange}
+                setState={setRegisterInputs}
+              />
+              <Spacer />
+              <Icon
+                as={CheckCircleIcon}
+                width="20px"
+                height="20px"
+                color="green"
+              ></Icon>
+            </Flex> */}
             <UsernameInput
               type="text"
               text="Username"

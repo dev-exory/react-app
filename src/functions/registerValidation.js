@@ -23,47 +23,57 @@ const validateUsername = async (username) => {
   return returnValue;
 };
 
-const validateInputs = (inputs) => {
-  const phoneNumber = inputs.phoneNumber;
-  const password = inputs.password;
-  const repeatPassword = inputs.repeatPassword;
-  const result = {
-    countryCode: [false, false],
-    isPhoneNumberValid: [false, false],
-    phoneNumber: [false, false],
-    password: [false, false],
-    repeatPassword: [false, false],
+const validateCountryCode = (countryCode) => {
+  const country = {
+    path: "",
+    value: false,
   };
 
-  // validate phone number
-  const phoneNumberLength = phoneNumber.length;
-  if (phoneNumberLength > 0) {
-    if (phoneNumberLength > 3 && phoneNumberLength <= 20) {
-      result.isPhoneNumberValid[0] = true;
+  countries.every((element) => {
+    if (element.dial_code === countryCode) {
+      country.path = images[`${element.code.toLowerCase()}.svg`];
+      country.value = true;
+      return false;
     } else {
-      result.isPhoneNumberValid[0] = false;
+      country.value = false;
+      return true;
     }
-  }
+  });
 
-  // validate password
-  if (password != "" && repeatPassword != "") {
-    if (password === repeatPassword) {
-      if (password.length >= 8) {
-        result.password[0] = true;
-        result.repeatPassword[0] = true;
-      } else {
-        result.password[0] = false;
-        result.repeatPassword[0] = false;
-      }
-    } else {
-      result.password[0] = false;
-      result.repeatPassword[0] = false;
-    }
-  } else {
-    result.password[0] = false;
-    result.repeatPassword[0] = false;
-  }
-  return result;
+  return [country.value, country.path];
 };
 
-export { validateUsername, validateInputs };
+const validatePhoneNumber = (phoneNumber) => {
+  if (phoneNumber.length > 0) {
+    if (phoneNumber.length >= 4 && phoneNumber.length <= 21) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+};
+
+const validatePasswords = (password, repeatPassword) => {
+  if (password != "" && repeatPassword != "") {
+    if (password.length >= 8 && repeatPassword.length >= 8) {
+      if (password === repeatPassword) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+};
+
+export {
+  validateUsername,
+  validateCountryCode,
+  validatePhoneNumber,
+  validatePasswords,
+};
