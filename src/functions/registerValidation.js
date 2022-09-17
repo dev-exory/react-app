@@ -13,10 +13,8 @@ const validateUsername = async (username) => {
     ).then((response) => {
       if (!response.ok) {
         returnValue = true;
-        console.log(returnValue);
       } else {
         returnValue = false;
-        console.log(returnValue);
       }
     });
   }

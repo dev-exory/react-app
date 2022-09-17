@@ -83,7 +83,7 @@ export default function Login({ handleChange, setUser }) {
   }
 
   return (
-    <div>
+    <>
       <img width="200px" height="200px" src={logo} className="logo" />
       <UsernameInput
         type="text"
@@ -110,6 +110,6 @@ export default function Login({ handleChange, setUser }) {
       <TextComponent text="Create an account" target="/register" />
       <h1>{loginInputs.username}</h1>
       <h1>{loginInputs.password}</h1>
-    </div>
+    </>
   );
 } //e12b37

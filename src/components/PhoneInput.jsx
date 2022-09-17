@@ -14,6 +14,7 @@ export default function PhoneInput({
   countryCodeMatch,
   handleChange,
   setState,
+  isValid,
 }) {
   function handleFocus(event) {
     event.target.value = "+";
@@ -71,10 +72,11 @@ export default function PhoneInput({
                 name="phoneNumber"
                 onChange={(e) => handleChange(e, setState)}
               />
-              <FormIcon />
             </InputGroup>
           </InputGroup>
-          <FormHelperText>Needed for account recovery</FormHelperText>
+          <FormHelperText>
+            Needed for account recovery {<FormIcon isValid={isValid} />}
+          </FormHelperText>
         </FormControl>
       </Flex>
     </>

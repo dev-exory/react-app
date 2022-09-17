@@ -4,6 +4,7 @@ import UsernameInput from "../../components/UsernameInput";
 import PhoneInput from "../../components/PhoneInput";
 import ButtonInput from "../../components/ButtonInput";
 import TextComponent from "../../components/TextComponent";
+import CodeInput from "../../components/smsCodeInput";
 
 import {
   validateUsername,
@@ -11,21 +12,6 @@ import {
   validatePhoneNumber,
   validatePasswords,
 } from "../../functions/registerValidation";
-
-import {
-  Icon,
-  VStack,
-  Container,
-  Grid,
-  GridItem,
-  Flex,
-  Box,
-  Spacer,
-} from "@chakra-ui/react";
-import { CheckCircleIcon } from "@chakra-ui/icons";
-
-import images from "../../assets/flags/importImages.js";
-import countries from "../../assets/flags/countries.json";
 
 import logo from "../../assets/logo.svg";
 
@@ -45,22 +31,16 @@ export default function Register({ handleChange }) {
     passwordValidation: false,
   });
 
-  const [codeSent, setCodeSent] = useState(false);
+  const [codeSent, setCodeSent] = useState(true);
   const [countryCodeMatch, setCountryCodeMatch] = useState(false);
   const [logoPath, setLogoPath] = useState("");
-
-  const register = async () => {
-    console.log("to register");
-  };
-
-  const verifyNumber = async () => {
-    console.log("to verify");
-  };
+  const [validate, setValidate] = useState(false);
+  const [verifyToast, setVerifyToast] = useState("account");
 
   const fetchData = async () => {
     setInputsValidation({
       ...inputsValidation,
-      usernameValidation: [await validateUsername(registerInputs.username)],
+      usernameValidation: await validateUsername(registerInputs.username),
     });
   };
 
@@ -110,6 +90,7 @@ export default function Register({ handleChange }) {
     console.log(
       "Phone number validation: " + inputsValidation.phoneNumberValidation
     );
+    console.log(inputsValidation.phoneNumberValidation);
   }, [inputsValidation.phoneNumberValidation]);
 
   // validate phone number
@@ -117,9 +98,7 @@ export default function Register({ handleChange }) {
     setInputsValidation((prevValue) => {
       return {
         ...prevValue,
-        phoneNumberValidation: [
-          validatePhoneNumber(registerInputs.phoneNumber),
-        ],
+        phoneNumberValidation: validatePhoneNumber(registerInputs.phoneNumber),
       };
     });
   }, [registerInputs.phoneNumber]);
@@ -134,12 +113,10 @@ export default function Register({ handleChange }) {
     setInputsValidation((prevValue) => {
       return {
         ...prevValue,
-        passwordValidation: [
-          validatePasswords(
-            registerInputs.password,
-            registerInputs.repeatPassword
-          ),
-        ],
+        passwordValidation: validatePasswords(
+          registerInputs.password,
+          registerInputs.repeatPassword
+        ),
       };
     });
   }, [registerInputs.password, registerInputs.repeatPassword]);
@@ -148,31 +125,8 @@ export default function Register({ handleChange }) {
     <div>
       <img width="200px" height="200px" src={logo} className="logo" />
       <div>
-        {!codeSent && (
+        {!codeSent ? (
           <>
-            {/* <Flex
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <UsernameInput
-                type="text"
-                text="Username"
-                name="username"
-                purpose="register"
-                handleChange={handleChange}
-                setState={setRegisterInputs}
-              />
-              <Spacer />
-              <Icon
-                as={CheckCircleIcon}
-                width="20px"
-                height="20px"
-                color="green"
-              ></Icon>
-            </Flex> */}
             <UsernameInput
               type="text"
               text="Username"
@@ -180,12 +134,14 @@ export default function Register({ handleChange }) {
               purpose="register"
               handleChange={handleChange}
               setState={setRegisterInputs}
+              isValid={inputsValidation.usernameValidation}
             />
             <PhoneInput
               logoPath={logoPath}
               countryCodeMatch={countryCodeMatch}
               handleChange={handleChange}
               setState={setRegisterInputs}
+              isValid={inputsValidation.phoneNumberValidation}
             />
             <PasswordInput
               text="Password"
@@ -193,26 +149,28 @@ export default function Register({ handleChange }) {
               purpose="register"
               handleChange={handleChange}
               setState={setRegisterInputs}
+              isValid={inputsValidation.passwordValidation}
             />
             <PasswordInput
               text="Repeat password"
               name="repeatPassword"
+              purpose="register"
               handleChange={handleChange}
               setState={setRegisterInputs}
+              isValid={inputsValidation.passwordValidation}
             />
           </>
+        ) : (
+          <>
+            <CodeInput />
+          </>
         )}
-        {/* {!inputsValidation.password[0] && (
-          <Alert status="error" style={{ top: 15 }}>
-            <AlertIcon />
-            <AlertTitle>Password fields do not match!</AlertTitle>
-          </Alert>
-        )} */}
+
         <ButtonInput
-          // disabled={!inputsValidation.password[0] ? true : false}
           text={!codeSent ? "Register" : "Verify"}
-          onClick={!codeSent ? register : verifyNumber}
+          toastType={verifyToast}
         />
+
         <TextComponent text="Back to login" target="/login" />
       </div>
     </div>

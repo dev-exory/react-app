@@ -3,6 +3,7 @@ import FormIcon from "./FormIcon";
 import {
   Button,
   Flex,
+  Spacer,
   Input,
   InputGroup,
   InputLeftElement,
@@ -27,7 +28,7 @@ export default function PasswordInput({
   name,
   purpose,
   setState,
-  isInvalid,
+  isValid,
 }) {
   const [show, setShow] = useState(false);
   // const handleClick = () => setShow(!show)
@@ -46,24 +47,29 @@ export default function PasswordInput({
               children={text === "Password" ? <LockIcon /> : <RepeatIcon />}
             />
             <Input
-              isInvalid={isInvalid}
-              errorBorderColor="red.300"
+              // isInvalid={!isValid}
+              // errorBorderColor="red.300"
               onChange={(e) => handleChange(e, setState)}
               type={show ? "text" : "password"}
               placeholder={text}
               size="md"
               name={name}
             />
-            <InputRightElement width="4.5rem" h="100%">
+            <InputRightElement width="4.5rem" h="100%" style={{}}>
               <Button h="1.75rem" size="sm" onClick={handleClick}>
                 {show ? "Hide" : "Show"}
               </Button>
             </InputRightElement>
-            <FormIcon />
             <FormErrorMessage>Email is required.</FormErrorMessage>
           </InputGroup>
+
           {purpose === "register" && (
-            <FormHelperText>Must contain at least 8 characters</FormHelperText>
+            <FormHelperText>
+              {name === "password"
+                ? "Must contain at least 8 characters"
+                : "Repeat password"}{" "}
+              {<FormIcon isValid={isValid} />}
+            </FormHelperText>
           )}
         </FormControl>
       </Flex>
