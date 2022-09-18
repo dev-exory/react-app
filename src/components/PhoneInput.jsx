@@ -16,6 +16,8 @@ export default function PhoneInput({
   setState,
   isValid,
 }) {
+  const [icon, setIocn] = useState(false);
+
   function handleFocus(event) {
     event.target.value = "+";
   }
@@ -71,11 +73,12 @@ export default function PhoneInput({
                 size="md"
                 name="phoneNumber"
                 onChange={(e) => handleChange(e, setState)}
+                onBlur={() => setIocn(true)}
               />
             </InputGroup>
           </InputGroup>
           <FormHelperText>
-            Needed for account recovery {<FormIcon isValid={isValid} />}
+            Needed for account recovery {icon && <FormIcon isValid={isValid} />}
           </FormHelperText>
         </FormControl>
       </Flex>

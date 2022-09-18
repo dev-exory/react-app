@@ -1,43 +1,65 @@
 import React from "react";
 
 import { useToast, Button } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+
 function ButtonInput({ text, toastType }) {
   const toast = useToast();
 
+  const navigate = useNavigate();
+
+  const handleToast = (toastTitle, toastDesc, toastStatus) => {
+    toast({
+      title: toastTitle,
+      description: toastDesc,
+      status: toastStatus,
+      duration: 9000,
+      isClosable: true,
+    });
+    return;
+  };
+
   return (
-    <Button
-      size="md"
-      mt="1.6rem"
-      w="100%"
-      bg="#e12b37"
-      borderRadius="10"
-      color="white"
-      _hover={{
-        bg: "#b3222b",
-      }}
-      onClick={() => {
-        console.log(toastType);
-        if (toastType === "account") {
-          toast({
-            title: "Account created.",
-            description: "We've created your account for you.",
-            status: "success",
-            duration: 9000,
-            isClosable: true,
-          });
-        } else if (toastType === "error") {
-          toast({
-            title: "Wrong code",
-            description: "Try to resend the verification code",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        }
-      }}
-    >
-      {text}
-    </Button>
+    <>
+      <Button
+        size="md"
+        mt="1.6rem"
+        w="100%"
+        bg="#e12b37"
+        borderRadius="10"
+        color="white"
+        _hover={{
+          bg: "#b3222b",
+        }}
+        onClick={() => {
+          if (toastType === "validRegister") {
+            handleToast(
+              "Account created",
+              "Sms code sent at your phone number",
+              "success"
+            );
+            navigate("/verify");
+          } else if (toastType === "invalidRegister") {
+            handleToast(
+              "Invalid inputs",
+              "Make sure every input is valid",
+              "error"
+            );
+          } else if (toastType === "activated") {
+            handleToast(
+              "Account verified",
+              "Now you can login to your account",
+              "success"
+            );
+            navigate("/login");
+          } else if (toastType === "noAcvitated") {
+            handleToast("Invalid code", "Try to resend the code", "error");
+          }
+        }}
+      >
+        {text}
+      </Button>
+    </>
   );
 }
 

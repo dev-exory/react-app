@@ -4,7 +4,8 @@ import UsernameInput from "../../components/UsernameInput";
 import PhoneInput from "../../components/PhoneInput";
 import ButtonInput from "../../components/ButtonInput";
 import TextComponent from "../../components/TextComponent";
-import CodeInput from "../../components/smsCodeInput";
+import Verification from "./Verification";
+import { Link } from "react-router-dom";
 
 import {
   validateUsername,
@@ -13,7 +14,7 @@ import {
   validatePasswords,
 } from "../../functions/registerValidation";
 
-import logo from "../../assets/logo.svg";
+import MainLogo from "../../components/MainLogo";
 
 export default function Register({ handleChange }) {
   const [registerInputs, setRegisterInputs] = useState({
@@ -31,11 +32,9 @@ export default function Register({ handleChange }) {
     passwordValidation: false,
   });
 
-  const [codeSent, setCodeSent] = useState(true);
   const [countryCodeMatch, setCountryCodeMatch] = useState(false);
   const [logoPath, setLogoPath] = useState("");
   const [validate, setValidate] = useState(false);
-  const [verifyToast, setVerifyToast] = useState("account");
 
   const fetchData = async () => {
     setInputsValidation({
@@ -43,6 +42,23 @@ export default function Register({ handleChange }) {
       usernameValidation: await validateUsername(registerInputs.username),
     });
   };
+
+  const validateInputs = () => {
+    if (
+      inputsValidation.usernameValidation === true &&
+      inputsValidation.countryCodeValidation === true &&
+      inputsValidation.phoneNumberValidation === true &&
+      inputsValidation.passwordValidation === true
+    ) {
+      setValidate(true);
+    } else {
+      setValidate(false);
+    }
+  };
+
+  useEffect(() => {
+    validateInputs();
+  }, [inputsValidation]);
 
   // username validate debug
   useEffect(() => {
@@ -122,57 +138,47 @@ export default function Register({ handleChange }) {
   }, [registerInputs.password, registerInputs.repeatPassword]);
 
   return (
-    <div>
-      <img width="200px" height="200px" src={logo} className="logo" />
-      <div>
-        {!codeSent ? (
-          <>
-            <UsernameInput
-              type="text"
-              text="Username"
-              name="username"
-              purpose="register"
-              handleChange={handleChange}
-              setState={setRegisterInputs}
-              isValid={inputsValidation.usernameValidation}
-            />
-            <PhoneInput
-              logoPath={logoPath}
-              countryCodeMatch={countryCodeMatch}
-              handleChange={handleChange}
-              setState={setRegisterInputs}
-              isValid={inputsValidation.phoneNumberValidation}
-            />
-            <PasswordInput
-              text="Password"
-              name="password"
-              purpose="register"
-              handleChange={handleChange}
-              setState={setRegisterInputs}
-              isValid={inputsValidation.passwordValidation}
-            />
-            <PasswordInput
-              text="Repeat password"
-              name="repeatPassword"
-              purpose="register"
-              handleChange={handleChange}
-              setState={setRegisterInputs}
-              isValid={inputsValidation.passwordValidation}
-            />
-          </>
-        ) : (
-          <>
-            <CodeInput />
-          </>
-        )}
+    <>
+      <MainLogo />
+      <UsernameInput
+        type="text"
+        text="Username"
+        name="username"
+        purpose="register"
+        handleChange={handleChange}
+        setState={setRegisterInputs}
+        isValid={inputsValidation.usernameValidation}
+      />
+      <PhoneInput
+        logoPath={logoPath}
+        countryCodeMatch={countryCodeMatch}
+        handleChange={handleChange}
+        setState={setRegisterInputs}
+        isValid={inputsValidation.phoneNumberValidation}
+      />
+      <PasswordInput
+        text="Password"
+        name="password"
+        purpose="register"
+        handleChange={handleChange}
+        setState={setRegisterInputs}
+        isValid={inputsValidation.passwordValidation}
+      />
+      <PasswordInput
+        text="Repeat password"
+        name="repeatPassword"
+        purpose="register"
+        handleChange={handleChange}
+        setState={setRegisterInputs}
+        isValid={inputsValidation.passwordValidation}
+      />
 
-        <ButtonInput
-          text={!codeSent ? "Register" : "Verify"}
-          toastType={verifyToast}
-        />
+      <ButtonInput
+        text="Register"
+        toastType={validate ? "validRegister" : "invalidRegister"}
+      />
 
-        <TextComponent text="Back to login" target="/login" />
-      </div>
-    </div>
+      <TextComponent text="Back to login" target="/login" />
+    </>
   );
 }

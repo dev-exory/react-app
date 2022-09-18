@@ -17,7 +17,7 @@ export default function CodeInput() {
     <Container mt="50px" textAlign="center">
       <FormControl>
         <FormLabel width="100%" textAlign="center">
-          Verification code
+          Verification code{" "}
         </FormLabel>
 
         <PinInput type="alphanumeric" size="lg" width="30px">
@@ -28,12 +28,16 @@ export default function CodeInput() {
           <PinInputField margin="10px" />
         </PinInput>
 
-        <FormHelperText>
-          Verification code sent at provided phone number.
-        </FormHelperText>
-        {/* <Button borderRadius="md" color="white" size="md">
-          Resend
-        </Button> */}
+        <FormHelperText>Please input the sms code here.</FormHelperText>
+        <Button
+          color="white"
+          size="md"
+          mt="20px"
+          bgColor="green.600"
+          _hover={{ backgroundColor: "green.700" }}
+        >
+          Send again
+        </Button>
       </FormControl>
     </Container>
   );

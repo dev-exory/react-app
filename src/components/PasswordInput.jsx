@@ -31,6 +31,7 @@ export default function PasswordInput({
   isValid,
 }) {
   const [show, setShow] = useState(false);
+  const [icon, setIocn] = useState(false);
   // const handleClick = () => setShow(!show)
   function handleClick() {
     setShow(!show);
@@ -50,6 +51,7 @@ export default function PasswordInput({
               // isInvalid={!isValid}
               // errorBorderColor="red.300"
               onChange={(e) => handleChange(e, setState)}
+              onBlur={() => setIocn(true)}
               type={show ? "text" : "password"}
               placeholder={text}
               size="md"
@@ -68,7 +70,7 @@ export default function PasswordInput({
               {name === "password"
                 ? "Must contain at least 8 characters"
                 : "Repeat password"}{" "}
-              {<FormIcon isValid={isValid} />}
+              {icon && <FormIcon isValid={isValid} />}
             </FormHelperText>
           )}
         </FormControl>

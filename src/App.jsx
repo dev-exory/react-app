@@ -3,6 +3,7 @@ import NavbarComponent from "./components/NavbarComponent";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
+import Verification from "./pages/Register/Verification";
 import "../src/assets/styles.css";
 
 // Chakra UI Dark Theme && css
@@ -61,6 +62,7 @@ export default function App() {
               path="/register"
               element={<Register handleChange={handleChange} />}
             />
+            <Route path="/verify" element={<Verification />} />
           </Routes>
         </Container>
       </VStack>
