@@ -37,12 +37,32 @@ export default function App() {
     });
   }
 
+  const fetchUser = async (token) => {
+    const headers = new Headers();
+    headers.append("Authorization", "Bearer " + token);
+
+    const requestOptions = {
+      method: "GET",
+      headers: headers,
+    };
+
+    await fetch("https://api-v2.exory.dev/user", requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("HTTP error");
+        }
+        return response.json();
+      })
+      .then((response) => setUser(response));
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     // console.log("token = " + token)
     if (token === null) {
       if (location.pathname != "/login") navigate("/login");
     } else {
+      fetchUser(token);
       navigate("/");
     }
   }, []);
@@ -51,7 +71,7 @@ export default function App() {
     <ChakraProvider theme={theme}>
       <NavbarComponent />
       <VStack>
-        <Container width="400px" mt="50px">
+        <Container width="400px" className="container">
           <Routes>
             <Route path="/" element={<Home user={user} />} />
             <Route

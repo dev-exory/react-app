@@ -3,31 +3,30 @@ import PasswordInput from "../../components/PasswordInput";
 import UsernameInput from "../../components/UsernameInput";
 import ButtonInput from "../../components/ButtonInput";
 import TextComponent from "../../components/TextComponent";
+import MainLogo from "../../components/MainLogo";
 import { Buffer } from "buffer";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.svg";
-
-import {
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-} from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 
 export default function Login({ handleChange, setUser }) {
   const navigate = useNavigate();
+  const toast = useToast();
   const [loginInputs, setLoginInputs] = useState({
     username: "",
     password: "",
   });
 
-  const [errorMessage, setErrorMessage] = useState();
-
-  useEffect(() => {
-    if (loginInputs.username === "" || loginInputs.password === "") {
-      setErrorMessage();
-    }
-  }, [loginInputs]);
+  const handleToast = (toastTitle, toastDesc, toastStatus) => {
+    toast({
+      title: toastTitle,
+      description: toastDesc,
+      status: toastStatus,
+      duration: 4000,
+      isClosable: true,
+    });
+    return;
+  };
 
   const fetchUser = async () => {
     const token = localStorage.getItem("authToken");
@@ -40,7 +39,7 @@ export default function Login({ handleChange, setUser }) {
       headers: headers,
     };
 
-    fetch("https://api-v2.exory.dev/user", requestOptions)
+    await fetch("https://api-v2.exory.dev/user", requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error("HTTP error");
@@ -68,6 +67,7 @@ export default function Login({ handleChange, setUser }) {
     fetch("https://api-v2.exory.dev/login", requestOptions)
       .then((response) => {
         if (!response.ok) {
+          handleToast("Invalid credentials", "", "error");
           throw new Error("Username or password is incorrect.");
         }
         return response.json();
@@ -75,19 +75,20 @@ export default function Login({ handleChange, setUser }) {
       .then(async (response) => {
         localStorage.setItem("authToken", response.token);
         await fetchUser();
+        handleToast("Logged in!", "", "success");
         navigate("/");
       })
       .catch((err) => {
-        setErrorMessage(err.message);
+        console.error(err);
       });
   }
 
   return (
     <>
-      <img width="200px" height="200px" src={logo} className="logo" />
+      <MainLogo />
       <UsernameInput
         type="text"
-        text="Email or username"
+        text="Username or email"
         name="username"
         purpose="login"
         handleChange={handleChange}
@@ -100,13 +101,9 @@ export default function Login({ handleChange, setUser }) {
         handleChange={handleChange}
         setState={setLoginInputs}
       />
-      {errorMessage && (
-        <Alert status="error" style={{ top: 15 }}>
-          <AlertIcon />
-          <AlertTitle>{errorMessage}</AlertTitle>
-        </Alert>
-      )}
-      <ButtonInput text="Login" onClick={handleClick} />
+      <div onClick={handleClick}>
+        <ButtonInput text="Login" />
+      </div>
       <TextComponent text="Create an account" target="/register" />
       <h1>{loginInputs.username}</h1>
       <h1>{loginInputs.password}</h1>

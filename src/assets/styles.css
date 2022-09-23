@@ -1,17 +1,35 @@
 body {
     margin: 0;
-    height: 100vh;
-    overflow-y: hidden;
 }
-
 #root {
-    height: 100vh;
-}
-h1 {
-    color: #EEEEEE;
+    overflow-y: scroll;
 }
 
-
+.container {
+    margin-top: 50px;
+}
 .logo {
     margin: 0 auto 0 auto;
 }
+.nav-logo {
+    display: none;
+}
+
+@media only screen and (max-width: 1024px) {
+    .container {
+        margin-top: 0px;
+    }
+    .logo {
+        display: none;
+        /* width: 60px;
+        height: 60px;
+        margin: 5px 0 0 0; */
+    }
+    .nav-logo {
+        display: block;
+        width: 50px;
+        height: 50px;
+        margin: 15px;
+    }
+
+  }

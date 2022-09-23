@@ -30,7 +30,7 @@ export default function UsernameInput({
     <>
       <Flex>
         <FormControl mt="1rem">
-          <FormLabel>Username</FormLabel>
+          <FormLabel>Username or email</FormLabel>
           <InputGroup w="100%">
             <InputLeftElement
               pointerEvents="none"

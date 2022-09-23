@@ -13,7 +13,7 @@ function ButtonInput({ text, toastType }) {
       title: toastTitle,
       description: toastDesc,
       status: toastStatus,
-      duration: 9000,
+      duration: 5000,
       isClosable: true,
     });
     return;
@@ -42,17 +42,17 @@ function ButtonInput({ text, toastType }) {
           } else if (toastType === "invalidRegister") {
             handleToast(
               "Invalid inputs",
-              "Make sure every input is valid",
+              "Make sure every input is valid and try again",
               "error"
             );
           } else if (toastType === "activated") {
             handleToast(
               "Account verified",
-              "Now you can login to your account",
+              "You can login to your account",
               "success"
             );
             navigate("/login");
-          } else if (toastType === "noAcvitated") {
+          } else if (toastType === "noActivated") {
             handleToast("Invalid code", "Try to resend the code", "error");
           }
         }}
