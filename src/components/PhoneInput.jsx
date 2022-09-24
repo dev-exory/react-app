@@ -16,8 +16,8 @@ export default function PhoneInput({
   setState,
   isValid,
 }) {
-  const [icon, setIocn] = useState(false);
-
+  const [firstInputColor, setFirstInputColor] = useState();
+  const [secondInputColor, setSecondInputColor] = useState();
   function handleFocus(event) {
     event.target.value = "+";
   }
@@ -58,28 +58,41 @@ export default function PhoneInput({
             )}
 
             <Input
+              borderColor={firstInputColor}
               type="num"
               width="100px"
               placeholder="+48"
               name="countryCode"
               onFocus={handleFocus}
               onChange={(e) => handleChange(e, setState)}
+              onBlur={() => {
+                {
+                  isValid[0]
+                    ? setFirstInputColor("green.600")
+                    : setFirstInputColor("red.400");
+                }
+              }}
             />
             <InputGroup>
               <InputLeftElement pointerEvents="none" children={<PhoneIcon />} />
               <Input
+                borderColor={secondInputColor}
                 type="number"
                 placeholder="Phone number"
                 size="md"
                 name="phoneNumber"
                 onChange={(e) => handleChange(e, setState)}
-                onBlur={() => setIocn(true)}
+                onBlur={() => {
+                  {
+                    isValid[1]
+                      ? setSecondInputColor("green.600")
+                      : setSecondInputColor("red.400");
+                  }
+                }}
               />
             </InputGroup>
           </InputGroup>
-          <FormHelperText>
-            Needed for account recovery {icon && <FormIcon isValid={isValid} />}
-          </FormHelperText>
+          <FormHelperText>Needed for account recovery</FormHelperText>
         </FormControl>
       </Flex>
     </>

@@ -4,8 +4,6 @@ import UsernameInput from "../../components/UsernameInput";
 import PhoneInput from "../../components/PhoneInput";
 import ButtonInput from "../../components/ButtonInput";
 import TextComponent from "../../components/TextComponent";
-import Verification from "./Verification";
-import { Link } from "react-router-dom";
 
 import {
   validateUsername,
@@ -154,7 +152,10 @@ export default function Register({ handleChange }) {
         countryCodeMatch={countryCodeMatch}
         handleChange={handleChange}
         setState={setRegisterInputs}
-        isValid={inputsValidation.phoneNumberValidation}
+        isValid={[
+          inputsValidation.countryCodeValidation,
+          inputsValidation.phoneNumberValidation,
+        ]}
       />
       <PasswordInput
         text="Password"
@@ -163,6 +164,7 @@ export default function Register({ handleChange }) {
         handleChange={handleChange}
         setState={setRegisterInputs}
         isValid={inputsValidation.passwordValidation}
+        bgColor={inputsValidation.passwordValidation ? "green.600" : "red.400"}
       />
       <PasswordInput
         text="Repeat password"
@@ -171,8 +173,8 @@ export default function Register({ handleChange }) {
         handleChange={handleChange}
         setState={setRegisterInputs}
         isValid={inputsValidation.passwordValidation}
+        bgColor={inputsValidation.passwordValidation ? "green.600" : "red.400"}
       />
-
       <ButtonInput
         text="Register"
         toastType={validate ? "validRegister" : "invalidRegister"}

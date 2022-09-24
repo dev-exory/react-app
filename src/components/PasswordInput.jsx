@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   Spacer,
+  Text,
   Input,
   InputGroup,
   InputLeftElement,
@@ -21,7 +22,8 @@ import {
   FormErrorMessage,
   FormHelperText,
 } from "@chakra-ui/react";
-
+import { Progress } from "@chakra-ui/react";
+import { passwordStrength } from "check-password-strength";
 export default function PasswordInput({
   handleChange,
   text,
@@ -29,13 +31,71 @@ export default function PasswordInput({
   purpose,
   setState,
   isValid,
+  bgColor,
+  strength,
 }) {
   const [show, setShow] = useState(false);
-  const [icon, setIocn] = useState(false);
-  // const handleClick = () => setShow(!show)
-  function handleClick() {
+  const [inputColor, setInputColor] = useState(false);
+  const [passwordInputStrength, setPasswordInputStrength] = useState(0);
+  const [passwordStrengthName, setPasswordStrengthName] = useState("Weak");
+  const [passwordStrengthColor, setPasswordStrengthColor] = useState();
+  const handleClick = () => {
     setShow(!show);
-  }
+  };
+
+  const customStrengthOptions = [
+    {
+      id: 0,
+      value: "Too weak",
+      minDiversity: 0,
+      minLength: 0,
+    },
+    {
+      id: 1,
+      value: "Weak",
+      minDiversity: 2,
+      minLength: 6,
+    },
+    {
+      id: 2,
+      value: "Good",
+      minDiversity: 3,
+      minLength: 8,
+    },
+    {
+      id: 3,
+      value: "Strong",
+      minDiversity: 4,
+      minLength: 12,
+    },
+  ];
+
+  const handlePasswordStrength = (event) => {
+    const pass = passwordStrength(event.target.value, customStrengthOptions);
+    switch (pass.id) {
+      case 0: {
+        setPasswordInputStrength(0);
+        setPasswordStrengthName(pass.value);
+        break;
+      }
+      case 1: {
+        setPasswordInputStrength(33);
+        setPasswordStrengthName(pass.value);
+        break;
+      }
+      case 2: {
+        setPasswordInputStrength(66);
+        setPasswordStrengthName(pass.value);
+        break;
+      }
+      case 3: {
+        setPasswordInputStrength(100);
+        setPasswordStrengthName(pass.value);
+        break;
+      }
+    }
+    console.log(passwordInputStrength);
+  };
 
   return (
     <>
@@ -48,10 +108,15 @@ export default function PasswordInput({
               children={text === "Password" ? <LockIcon /> : <RepeatIcon />}
             />
             <Input
-              // isInvalid={!isValid}
-              // errorBorderColor="red.300"
-              onChange={(e) => handleChange(e, setState)}
-              onBlur={() => setIocn(true)}
+              borderColor={inputColor ? bgColor : null}
+              onChange={(e) => {
+                handleChange(e, setState);
+                setInputColor(true);
+                handlePasswordStrength(e);
+              }}
+              onBlur={(e) => {
+                handlePasswordStrength(e);
+              }}
               type={show ? "text" : "password"}
               placeholder={text}
               size="md"
@@ -62,15 +127,29 @@ export default function PasswordInput({
                 {show ? "Hide" : "Show"}
               </Button>
             </InputRightElement>
-            <FormErrorMessage>Email is required.</FormErrorMessage>
           </InputGroup>
 
           {purpose === "register" && (
             <FormHelperText>
-              {name === "password"
-                ? "Must contain at least 8 characters"
-                : "Repeat password"}{" "}
-              {icon && <FormIcon isValid={isValid} />}
+              {/* {name === "password" && "Must contain at least 8 characters"} */}
+              {name === "password" && (
+                <>
+                  <Progress
+                    value={passwordInputStrength}
+                    size="xs"
+                    colorScheme="green"
+                    width="100%"
+                    borderRadius="50px"
+                    bgColor="gray.500"
+                  />
+
+                  <Flex>
+                    <Text>{passwordStrengthName}</Text>
+                    <Spacer />
+                    <Text>min 6 characters</Text>
+                  </Flex>
+                </>
+              )}
             </FormHelperText>
           )}
         </FormControl>

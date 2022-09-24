@@ -71,7 +71,7 @@ export default function App() {
     <ChakraProvider theme={theme}>
       <NavbarComponent />
       <VStack>
-        <Container width="400px" className="container">
+        <Container maxWidth="400px" className="container">
           <Routes>
             <Route path="/" element={<Home user={user} />} />
             <Route

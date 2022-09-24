@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import FormIcon from "./FormIcon";
-import { Input, InputGroup, InputLeftElement, Flex } from "@chakra-ui/react";
 import {
-  EmailIcon,
-  CheckCircleIcon,
-  NotAllowedIcon,
-  BellIcon,
-} from "@chakra-ui/icons";
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Flex,
+  Spacer,
+} from "@chakra-ui/react";
+import { EmailIcon, BellIcon } from "@chakra-ui/icons";
 
 import {
   FormControl,
@@ -24,13 +25,12 @@ export default function UsernameInput({
   setState,
   isValid,
 }) {
-  const [icon, setIocn] = useState(false);
-
+  const [inputColor, setInputColor] = useState();
   return (
     <>
       <Flex>
         <FormControl mt="1rem">
-          <FormLabel>Username or email</FormLabel>
+          <FormLabel>Username {purpose != "register" && "or email"}</FormLabel>
           <InputGroup w="100%">
             <InputLeftElement
               pointerEvents="none"
@@ -46,10 +46,19 @@ export default function UsernameInput({
             />
 
             <Input
+              borderColor={inputColor}
               onChange={(e) => {
                 handleChange(e, setState);
               }}
-              onBlur={() => setIocn(true)}
+              onBlur={() => {
+                if (purpose === "register") {
+                  {
+                    isValid
+                      ? setInputColor("green.500")
+                      : setInputColor("red.400");
+                  }
+                }
+              }}
               type={type}
               placeholder={text}
               size="md"
@@ -59,7 +68,11 @@ export default function UsernameInput({
 
           {purpose === "register" && (
             <FormHelperText>
-              Your display name {icon && <FormIcon isValid={isValid} />}
+              <Flex>
+                Your display name
+                <Spacer />
+                min 3 characters
+              </Flex>
             </FormHelperText>
           )}
         </FormControl>
